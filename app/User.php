@@ -38,4 +38,11 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($value);
     }
+
+    /** One user owns many feedbacks
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    function feedbacks() {
+        return $this->hasMany(\App\Feedback::class, 'user_id', 'id');
+    }
 }
