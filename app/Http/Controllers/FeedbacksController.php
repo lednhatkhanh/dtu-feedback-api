@@ -34,39 +34,38 @@ class FeedbacksController extends BaseController
      * @return \Dingo\Api\Http\Response|\Illuminate\Http\JsonResponse
      */
     function store(Request $request) {
-        $input = $request->only([
-            'title',
-            'description',
-            'location',
-            'image'
-        ]);
+        //eturn response()->json(['exists' => $request->hasFile('image')], 200);
 
-        $validator = Validator::make($input, [
+        $validator = Validator::make($request->all(), [
             'title' => 'required|max:255|unique:feedbacks,title',
             'description' => 'required',
             'location' => 'required',
-            'image' => 'image'
+            'image' => 'sometimes|required|image'
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->all(), 422);
         }
 
-        $original_image = $request->file('image');
-        $image_name = hash('sha256', "" . Carbon::now()->getTimestamp()
-            . $request->file('image')->getFilename()) . ".jpeg";
-        $image_path = storage_path('app/images/') . $image_name;
-
         $feedback = new Feedback();
-        $feedback->title = $input['title'];
-        $feedback->description = $input['description'];
-        $feedback->location = $input['location'];
-        $feedback->image = $image_name;
+        $feedback->title = $request->get('title');
+        $feedback->description = $request->get('description');
+        $feedback->location = $request->get('location');
+
+        if($request->hasFile('image')) {
+            $original_image = $request->file('image');
+            $image_name = hash('sha256', "" . Carbon::now()->getTimestamp()
+                    . $request->file('image')->getFilename()) . ".jpeg";
+            $image_path = storage_path('app/images/') . $image_name;
+
+            $feedback->image = $image_name;
+
+            Image::make($original_image)->encode('jpeg')
+                ->save($image_path);;
+        }
+
         $feedback->user_id = JWTAuth::parseToken()->authenticate()->id;
         $feedback->save();
-
-        Image::make($original_image)->encode('jpeg')
-            ->save($image_path);
 
         //$new_image->response()
         return $this->response->item($feedback, new FeedbackTransformer);
@@ -99,47 +98,45 @@ class FeedbacksController extends BaseController
         }
 
         $user_id = JWTAuth::parseToken()->authenticate()->id;
-        // User has no access right
         if($user_id != $feedback->user_id) {
             return $this->response->errorUnauthorized("You are not allowed to update this feedback!");
         }
 
-        $input = $request->only([
-            'title',
-            'description',
-            'location',
-            'image'
-        ]);
-
-        $validator = Validator::make($input, [
+        $validator = Validator::make($request->all(), [
             'title' => 'required|max:255|unique:feedbacks,title,'.$id,
             'description' => 'required',
             'location' => 'required',
-            'image' => 'image'
+            'sometimes|required|image'
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors()->all(), 422);
         }
 
-        $original_image = $request->file('image');
-        $image_name = hash('sha256', "" . Carbon::now()->getTimestamp()
-                . $request->file('image')->getFilename()) . ".jpeg";
-        $image_path = storage_path('app/images/') . $image_name;
-        $old_image_path = storage_path('app/images/') . $feedback->image;
+        $image_name = null;
 
-        $feedback->title = $input['title'];
-        $feedback->description = $input['description'];
-        $feedback->location = $input['location'];
+        if($request->hasFile('image')) {
+            $image_name = hash('sha256', '' . Carbon::now()->getTimestamp()
+                    . $request->file('image')->getFilename()) . '.jpeg';
+
+            $image_path = storage_path('app/images/') . $image_name;
+
+            Image::make($request->file('image'))->encode('jpeg')
+                ->save($image_path);
+        }
+
+        if($feedback->image) {
+            $old_image_path = storage_path('app/images/') . $feedback->image;
+            if(file_exists($old_image_path)) {
+                Storage::disk('local')->delete('images/' . $feedback->image);
+            }
+        }
+
+        $feedback->title = $request->get('title');
+        $feedback->description = $request->get('description');
+        $feedback->location = $request->get('location');
         $feedback->image = $image_name;
         $feedback->save();
-
-        Image::make($original_image)->encode('jpeg')
-            ->save($image_path);
-
-        if(file_exists($old_image_path)) {
-            Storage::disk('local')->delete("/images/" . $feedback->image);
-        }
 
         return $this->response->item($feedback, new FeedbackTransformer);
     }
@@ -157,9 +154,11 @@ class FeedbacksController extends BaseController
             return $this->response->errorUnauthorized("You are not allowed to delete this feedback!");
         }
 
-        $old_image_path = storage_path('app/images/') . $feedback->image;
-        if(file_exists($old_image_path)) {
-            Storage::disk('local')->delete("/images/" . $feedback->image);
+        if($feedback->image) {
+            $old_image_path = storage_path('app/images/') . $feedback->image;
+            if(file_exists($old_image_path)) {
+                Storage::disk('local')->delete('images/' . $feedback->image);
+            }
         }
 
         $feedback->delete();
