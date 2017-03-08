@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFeedbacksTable extends Migration
+class CreateCampusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateFeedbacksTable extends Migration
      */
     public function up()
     {
-        Schema::create('feedbacks', function (Blueprint $table) {
+        Schema::create('campuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->unique();
-            $table->text('description');
-            $table->string('location');
-            $table->string('image')->nullable();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('campus_id');
+            $table->string('name');
+            $table->string('address');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateFeedbacksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedbacks');
+        Schema::dropIfExists('campuses');
     }
 }

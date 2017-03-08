@@ -39,6 +39,7 @@ class FeedbacksController extends BaseController
             'title' => 'required|max:255|unique:feedbacks,title',
             'description' => 'required|min:10',
             'location' => 'required',
+            'campus_id' => 'required|exists:campuses,id',
             'image' => 'sometimes|required|image'
         ]);
 
@@ -50,6 +51,7 @@ class FeedbacksController extends BaseController
         $feedback->title = $request->get('title');
         $feedback->description = $request->get('description');
         $feedback->location = $request->get('location');
+        $feedback->campus_id = $request->get('campus_id');
 
         if($request->hasFile('image')) {
             $original_image = $request->file('image');
@@ -105,7 +107,8 @@ class FeedbacksController extends BaseController
             'title' => 'required|max:255|unique:feedbacks,title,'.$id,
             'description' => 'required',
             'location' => 'required',
-            'sometimes|required|image'
+            'campus_id' => 'required|exists:campuses,id',
+            'image' => 'sometimes|required|image'
         ]);
 
         if($validator->fails()) {
@@ -134,6 +137,7 @@ class FeedbacksController extends BaseController
         $feedback->title = $request->get('title');
         $feedback->description = $request->get('description');
         $feedback->location = $request->get('location');
+        $feedback->campus_id = $request->get('campus_id');
         $feedback->image = $image_name;
         $feedback->save();
 
