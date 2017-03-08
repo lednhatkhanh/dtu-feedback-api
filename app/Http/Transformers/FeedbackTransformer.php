@@ -22,12 +22,13 @@ class FeedbackTransformer extends TransformerAbstract
             'campus' => [
                 'id' => $feedback->campus->id,
                 'name' => $feedback->campus->name,
+                'address' => $feedback->campus->address,
             ],
-            'image' => $feedback->image,
             'user' => [
                 'id' => $feedback->user->id,
                 'name' => $feedback->user->name,
             ],
+            'image' => $feedback->image,
         ];
     }
 }

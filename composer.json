@@ -11,7 +11,8 @@
         "dingo/api": "1.0.x@dev",
         "barryvdh/laravel-cors": "^0.8.2",
         "intervention/image": "^2.3",
-        "intervention/imagecache": "^2.3"
+        "intervention/imagecache": "^2.3",
+        "spatie/laravel-permission": "^1.11"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

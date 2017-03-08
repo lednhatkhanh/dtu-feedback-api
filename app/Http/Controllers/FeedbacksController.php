@@ -98,8 +98,9 @@ class FeedbacksController extends BaseController
             return $this->response->errorNotFound("There is no matched feedback");
         }
 
-        $user_id = JWTAuth::parseToken()->authenticate()->id;
-        if($user_id != $feedback->user_id) {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if($user->id != $feedback->user_id && !$user->can('access_backend')) {
             return $this->response->errorUnauthorized("You are not allowed to update this feedback!");
         }
 
@@ -151,9 +152,9 @@ class FeedbacksController extends BaseController
             return $this->response->errorNotFound("There is no matched feedback");
         }
 
-        $user_id = JWTAuth::parseToken()->authenticate()->id;
+        $user = JWTAuth::parseToken()->authenticate();
         // User has no access right
-        if($user_id != $feedback->user_id) {
+        if($user->id != $feedback->user_id && !$user->can('access_backend')) {
             return $this->response->errorUnauthorized("You are not allowed to delete this feedback!");
         }
 
@@ -165,7 +166,6 @@ class FeedbacksController extends BaseController
         }
 
         $feedback->delete();
-
         return $this->response->noContent();
     }
 }

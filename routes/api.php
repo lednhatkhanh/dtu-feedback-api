@@ -35,5 +35,9 @@ $api->version('v1', function (Router $api) {
         $api->resource('feedbacks', 'App\\Http\\Controllers\\FeedbacksController', [
             'except' => ['edit', 'create']
         ]);
+
+        $api->resource('campuses', 'App\\Http\\Controllers\\CampusesController', [
+            'except' => ['edit', 'create']
+        ]);
     });
 });

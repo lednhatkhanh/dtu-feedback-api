@@ -10,8 +10,9 @@ namespace App\Http\Transformers;
 
 
 use App\Comment;
+use League\Fractal\TransformerAbstract;
 
-class CommentTransformer
+class CommentTransformer extends TransformerAbstract
 {
     public function transform(Comment $comment) {
         return [
