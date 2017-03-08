@@ -18,7 +18,10 @@ class CommentTransformer
             'id' => $comment->id,
             'content' => $comment->content,
             'feedback_id' => $comment->feedback_id,
-            'user_id' => $comment->user_id
+            'user' => [
+                'id' => $comment->user->id,
+                'name' => $comment->user->name,
+            ]
         ];
     }
 }

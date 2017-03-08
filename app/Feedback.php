@@ -22,6 +22,10 @@ class Feedback extends Model
         return $this->belongsTo(\App\User::class, 'user_id', 'id');
     }
 
+    function campus() {
+        return $this->belongsTo(\App\Campus::class, 'campus_id', 'id');
+    }
+
     function comments() {
         return $this->hasMany(\App\Comment::class, 'feedback_id', 'id');
     }
