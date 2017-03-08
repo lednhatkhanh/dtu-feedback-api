@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
-    // Really, this is an ERROR...
     protected $table = "feedbacks";
 
     protected $fillable = [
@@ -21,5 +20,9 @@ class Feedback extends Model
      */
     function user() {
         return $this->belongsTo(\App\User::class, 'user_id', 'id');
+    }
+
+    function comments() {
+        return $this->hasMany(\App\Comment::class, 'feedback_id', 'id');
     }
 }

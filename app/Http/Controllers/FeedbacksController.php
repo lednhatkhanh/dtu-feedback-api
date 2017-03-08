@@ -15,7 +15,6 @@ class FeedbacksController extends BaseController
 {
     function __construct()
     {
-        $this->middleware('cors');
         $this->middleware('jwt.auth', [
             'except' => ['index', 'show']
         ]);
@@ -38,7 +37,7 @@ class FeedbacksController extends BaseController
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255|unique:feedbacks,title',
-            'description' => 'required',
+            'description' => 'required|min:10',
             'location' => 'required',
             'image' => 'sometimes|required|image'
         ]);
@@ -79,7 +78,7 @@ class FeedbacksController extends BaseController
         $feedback = Feedback::find($id);
 
         if(! $feedback) {
-            return $this->response->errorNotFound("There are no matched feedback");
+            return $this->response->errorNotFound("There is no matched feedback");
         }
 
         return $this->response->item($feedback, new FeedbackTransformer);
@@ -94,7 +93,7 @@ class FeedbacksController extends BaseController
         $feedback = Feedback::find($id);
 
         if(! $feedback) {
-            return $this->response->errorNotFound("There are no matched feedback");
+            return $this->response->errorNotFound("There is no matched feedback");
         }
 
         $user_id = JWTAuth::parseToken()->authenticate()->id;
@@ -145,7 +144,7 @@ class FeedbacksController extends BaseController
         $feedback = Feedback::find($id);
 
         if(! $feedback) {
-            return $this->response->errorNotFound("There are no matched feedback");
+            return $this->response->errorNotFound("There is no matched feedback");
         }
 
         $user_id = JWTAuth::parseToken()->authenticate()->id;

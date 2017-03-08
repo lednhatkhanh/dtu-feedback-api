@@ -45,4 +45,8 @@ class User extends Authenticatable
     function feedbacks() {
         return $this->hasMany(\App\Feedback::class, 'user_id', 'id');
     }
+
+    function comments() {
+        return $this->hasMany(\App\Comment::class, 'user_id', 'id');
+    }
 }
