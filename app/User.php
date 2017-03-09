@@ -40,7 +40,7 @@ class User extends Authenticatable
         $this->attributes['password'] = Hash::make($value);
     }
 
-    /** One user owns many feedbacks
+    /** One user owns many feedback
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     function feedbacks() {

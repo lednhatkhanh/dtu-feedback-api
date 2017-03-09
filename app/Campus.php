@@ -13,7 +13,7 @@ class Campus extends Model
         'address',
     ];
 
-    function feedback() {
+    function feedbacks() {
         $this->hasMany(Feedback::class, 'campus_id', 'id');
     }
 }

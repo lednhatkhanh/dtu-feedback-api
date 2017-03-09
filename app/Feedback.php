@@ -12,7 +12,8 @@ class Feedback extends Model
         'title',
         'description',
         'location',
-        'image'
+        'image',
+        'solved'
     ];
 
     /** Each feedback is belonged to one user

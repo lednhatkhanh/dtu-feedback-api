@@ -22,3 +22,23 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(\App\Feedback::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->sentence(),
+        'description' => $faker->paragraph(),
+        'location' => $faker->sentence(),
+        'campus_id' => $faker->numberBetween(1,3),
+        'user_id' => $faker->numberBetween(2, 6),
+        'image' => $faker->image(storage_path('app/images'), null, null, 'cats', false),
+        'solved' => $faker->boolean()
+    ];
+});
+
+$factory->define(\App\Comment::class, function (Faker\Generator $faker) {
+    return [
+        'content' => $faker->paragraph(),
+        'user_id' => $faker->numberBetween(2, 6),
+        'feedback_id' => $faker->numberBetween(1, 30)
+    ];
+});
