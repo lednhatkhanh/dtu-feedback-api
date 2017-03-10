@@ -6,6 +6,7 @@ use App\Campus;
 use App\Http\Transformers\CampusTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CampusesController extends BaseController
 {
