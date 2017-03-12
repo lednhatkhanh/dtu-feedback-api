@@ -20,6 +20,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'avatar' => $faker->randomElement(array('avatar1.png', 'avatar2.png', 'avatar3.png', 'avatar4.png'))
     ];
 });
 
@@ -30,7 +31,7 @@ $factory->define(\App\Feedback::class, function (Faker\Generator $faker) {
         'location' => $faker->sentence(),
         'campus_id' => $faker->numberBetween(1,3),
         'user_id' => $faker->numberBetween(2, 6),
-        'image' => $faker->image(storage_path('app/images'), null, null, 'cats', false),
+        'image' => $faker->randomElement(array('placeholder1.png', 'placeholder2.png', 'placeholder3.png')),
         'solved' => $faker->boolean()
     ];
 });

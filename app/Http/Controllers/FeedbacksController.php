@@ -96,7 +96,7 @@ class FeedbacksController extends BaseController
             $feedback->image = $image_name;
 
             Image::make($original_image)->encode('jpeg')
-                ->save($image_path);;
+                ->save($image_path);
         }
 
         $feedback->save();
