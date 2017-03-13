@@ -39,12 +39,10 @@ class FeedbacksController extends BaseController
 
         $feedback = null;
 
-        if($request->exists('sort')) {
-            if($request->get('sort') == 0) {
-                $feedback = Feedback::orderBy('created_at', 'ASC');
-            }
+        if($request->exists('sort') && $request->get('sort') == 0) {
+            $feedback = Feedback::orderBy('created_at', 'asc');
         } else {
-            $feedback = Feedback::orderBy('created_at', 'DESC');
+            $feedback = Feedback::orderBy('created_at', 'desc');
         }
 
         if($request->exists('solved')) {
