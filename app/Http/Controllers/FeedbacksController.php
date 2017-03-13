@@ -29,7 +29,8 @@ class FeedbacksController extends BaseController
 
         $validator = Validator::make($request->all(), [
            'sort' => 'integer|in:0,1',
-            'solved' => 'string|in:true,false,all' // This is a BUG with laravel...
+            'solved' => 'string|in:true,false,all', // This is a BUG with laravel...
+            'total' => 'integer',
         ]);
 
         if($validator->fails()) {
@@ -55,7 +56,13 @@ class FeedbacksController extends BaseController
             }
         }
 
-        $feedback = $feedback->paginate(10);
+        $total = $request->get('total');
+
+        if($total) {
+            $feedback = $feedback->paginate($total);
+        } else {
+            $feedback = $feedback->paginate(10);
+        }
 
         return $this->response->paginator($feedback, new FeedbackTransformer);
     }
