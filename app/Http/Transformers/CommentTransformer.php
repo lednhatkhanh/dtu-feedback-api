@@ -22,6 +22,7 @@ class CommentTransformer extends TransformerAbstract
             'user' => [
                 'id' => $comment->user->id,
                 'name' => $comment->user->name,
+                'role' => $comment->user->roles()->pluck('name'),
             ]
         ];
     }

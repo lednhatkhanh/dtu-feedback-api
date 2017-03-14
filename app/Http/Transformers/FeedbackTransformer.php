@@ -31,11 +31,7 @@ class FeedbackTransformer extends TransformerAbstract
                 'name' => $feedback->user->name,
                 'role' => $feedback->user->roles()->pluck('name'),
             ],
-            'imageUrls' => [
-                'small' => url('/') . '/imagecache/small/' .$feedback->image,
-                'medium' => url('/') . '/imagecache/medium/' .$feedback->image,
-                'large' => url('/') . '/imagecache/large/' .$feedback->image,
-            ],
+            'image' => $feedback->image,
             'created_at' => Carbon::createFromFormat('Y-m-d H:m:s', $feedback->created_at)
                 ->format('Y-m-d H:m'),
             'updated_at' => Carbon::createFromFormat('Y-m-d H:m:s', $feedback->updated_at)
