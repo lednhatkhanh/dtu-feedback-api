@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +21,11 @@ class DatabaseSeeder extends Seeder
         factory(\App\User::class, 5)->create();
         factory(\App\Feedback::class, 30)->create();
         factory(\App\Comment::class, 60)->create();
+        for($i = 2; $i <= 6; $i++) {
+            DB::table('user_has_roles')->insert([
+                'role_id' => 2,
+                'user_id' => $i
+            ]);
+        }
     }
 }
