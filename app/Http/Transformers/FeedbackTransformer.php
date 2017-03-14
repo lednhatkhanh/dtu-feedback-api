@@ -21,8 +21,17 @@ class FeedbackTransformer extends TransformerAbstract
             'description' => $feedback->description,
             'location' => $feedback->location,
             'solved' => $feedback->solved ? true : false,
-            'campus' => $feedback->campus,
-            'user' => $feedback->user,
+            'campus' => [
+                'id' => $feedback->campus->id,
+                'name' => $feedback->campus->name,
+                'address' => $feedback->campus->address,
+            ],
+            'user' => [
+                'id' => $feedback->user->id,
+                'name' => $feedback->user->name,
+                'role' => $feedback->user->roles()->pluck('name'),
+                'avatar' => $feedback->user->avatar,
+            ],
             'image' => $feedback->image,
             'created_at' => Carbon::createFromFormat('Y-m-d H:m:s', $feedback->created_at)
                 ->format('Y-m-d H:m'),
