@@ -19,11 +19,7 @@ class CommentTransformer extends TransformerAbstract
             'id' => $comment->id,
             'content' => $comment->content,
             'feedback_id' => $comment->feedback_id,
-            'user' => [
-                'id' => $comment->user->id,
-                'name' => $comment->user->name,
-                'role' => $comment->user->roles()->pluck('name'),
-            ]
+            'user' => $comment->user,
         ];
     }
 }
