@@ -16,7 +16,7 @@ $api->version('v1', function (Router $api) {
 
     $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
 
-        $api->get('me', 'App\\Http\\Controllers\\CommentsController@me');
+        $api->get('me', 'App\\Http\\Controllers\\UsersController@me');
 
         $api->get('refresh', [
             'middleware' => 'jwt.refresh',
