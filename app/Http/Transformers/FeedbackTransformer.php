@@ -31,10 +31,8 @@ class FeedbackTransformer extends TransformerAbstract
                 'avatar' => $feedback->user->avatar,
             ],
             'image' => $feedback->image,
-            'created_at' => Carbon::createFromFormat('Y-m-d H:m:s', $feedback->created_at)
-                ->format('Y-m-d H:m'),
-            'updated_at' => Carbon::createFromFormat('Y-m-d H:m:s', $feedback->updated_at)
-                ->format('Y-m-d H:m'),
+            'created_at' => $feedback->created_at->toDateTimeString(),
+            'updated_at' => $feedback->updated_at->toDateTimeString(),
         ];
     }
 }

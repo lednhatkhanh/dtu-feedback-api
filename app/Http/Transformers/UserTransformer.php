@@ -22,10 +22,8 @@ class UserTransformer extends TransformerAbstract
             'email' => $user->email,
             'avatar' => $user->avatar,
             'roles' => $user->roles->pluck('name'),
-            'created_at' => Carbon::createFromFormat('Y-m-d H:m:s', $user->created_at)
-                ->format('Y-m-d H:m'),
-            'updated_at' => Carbon::createFromFormat('Y-m-d H:m:s', $user->updated_at)
-                ->format('Y-m-d H:m'),
+            'created_at' => $user->created_at->toDateTimeString(),
+            'updated_at' => $user->updated_at->toDateTimeString(),
         ];
     }
 }
