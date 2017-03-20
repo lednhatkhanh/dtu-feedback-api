@@ -25,7 +25,7 @@ class CommentsController extends BaseController
             return $this->response->errorNotFound("There is no matched feedback");
         }
 
-        $comments = Comment::paginate(10);
+        $comments = Comment::where('feedback_id', $feedback->id)->paginate(10);
         return $this->response->paginator($comments, new CommentTransformer);
     }
 
