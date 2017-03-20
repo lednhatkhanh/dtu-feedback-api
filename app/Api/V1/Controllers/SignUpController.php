@@ -19,13 +19,15 @@ class SignUpController extends Controller
 
         if($request->hasFile('avatar')) {
             $client_file = $request->file('avatar');
-            $avatar_name = '' . Carbon::now()->getTimestamp() . '_' . $client_file->getFilename() . '.jpeg';
+            $avatar_name = '' . Carbon::now()->getTimestamp() . '_' . $client_file->getFilename() . '.jpg';
             $avatar_path = storage_path('app/avatars/') . $avatar_name;
 
             $user->avatar = $avatar_name;
 
-            Image::make($client_file)->encode('jpeg')
+            Image::make($client_file)->encode('jpg')
                 ->save($avatar_path);
+        } else {
+            $user->avatar = 'avatar1.png';
         }
 
         if(!$user->save()) {

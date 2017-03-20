@@ -95,12 +95,12 @@ class FeedbacksController extends BaseController
 
         if($request->hasFile('image')) {
             $original_image = $request->file('image');
-            $image_name = '' . Carbon::now()->getTimestamp() . '_' . $user_id . '.jpeg';
+            $image_name = '' . Carbon::now()->getTimestamp() . '_' . $user_id . '.jpg';
             $image_path = storage_path('app/images/') . $image_name;
 
             $feedback->image = $image_name;
 
-            Image::make($original_image)->encode('jpeg')
+            Image::make($original_image)->encode('jpg')
                 ->save($image_path);
         }
 
@@ -156,10 +156,10 @@ class FeedbacksController extends BaseController
         }
 
         if($request->hasFile('image')) {
-            $image_name = '' . Carbon::now()->getTimestamp() . '_' . $user->id . '.jpeg';
+            $image_name = '' . Carbon::now()->getTimestamp() . '_' . $user->id . '.jpg';
             $image_path = storage_path('app/images/') . $image_name;
 
-            Image::make($request->file('image'))->encode('jpeg')
+            Image::make($request->file('image'))->encode('jpg')
                 ->save($image_path);
             $feedback->image = $image_name;
         }
