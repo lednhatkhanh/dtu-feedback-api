@@ -26,7 +26,9 @@ class CommentTransformer extends TransformerAbstract
                 'name' => $comment->user->name,
                 'role' => $comment->user->roles()->pluck('name'),
                 'avatar' => $comment->user->avatar,
-            ]
+            ],
+            'created_at' => $comment->created_at->toDateTimeString(),
+            'updated_at' => $comment->updated_at->toDateTimeString(),
         ];
     }
 }
