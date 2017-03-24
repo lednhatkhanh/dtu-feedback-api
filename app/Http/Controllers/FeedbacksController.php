@@ -209,4 +209,22 @@ class FeedbacksController extends BaseController
         $feedback->delete();
         return $this->response->noContent();
     }
+
+    function toggle($id) {
+        $feedback = Feedback::find($id);
+
+        if(! $feedback) {
+            return $this->response->errorNotFound("There is no matched feedback");
+        }
+
+        $user = JWTAuth::parseToken()->authenticate();
+        // User has no access right
+        if($user->id != $feedback->user_id && !$user->can('access_backend')) {
+            return $this->response->errorUnauthorized("You are not allowed to delete this feedback!");
+        }
+
+        $feedback->solved = !$feedback->solved;
+        $feedback->save();
+        return $this->response->item($feedback, new FeedbackTransformer);
+    }
 }
