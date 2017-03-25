@@ -16,6 +16,7 @@ class AddConstraintsToFeedbacksTable extends Migration
         Schema::table('feedbacks', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('campus_id')->references('id')->on('campuses');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
