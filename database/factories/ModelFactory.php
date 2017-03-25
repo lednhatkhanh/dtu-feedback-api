@@ -30,9 +30,11 @@ $factory->define(\App\Feedback::class, function (Faker\Generator $faker) {
         'description' => $faker->paragraph(),
         'location' => $faker->sentence(),
         'campus_id' => $faker->numberBetween(1,3),
+        'category_id' => $faker->numberBetween(1, 2),
         'user_id' => $faker->numberBetween(2, 6),
         'image' => $faker->randomElement(array('placeholder1.png', 'placeholder2.png', 'placeholder3.png')),
-        'solved' => $faker->boolean()
+        'solved' => $faker->boolean(),
+        'is_private' => $faker->boolean(),
     ];
 });
 

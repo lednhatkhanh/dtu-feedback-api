@@ -19,18 +19,21 @@ class FeedbackTransformer extends TransformerAbstract
             'id' => $feedback->id,
             'title' => $feedback->title,
             'description' => $feedback->description,
+            'image' => $feedback->image,
             'location' => $feedback->location,
             'solved' => $feedback->solved ? true : false,
+            'is_private' => $feedback->is_private ? true : false,
             'campus' => [
                 'id' => $feedback->campus->id,
+            ],
+            'category' => [
+                'id' => $feedback->category->id,
             ],
             'user' => [
                 'id' => $feedback->user->id,
                 'name' => $feedback->user->name,
-                'role' => $feedback->user->roles()->pluck('name'),
                 'avatar' => $feedback->user->avatar,
             ],
-            'image' => $feedback->image,
             'created_at' => $feedback->created_at->toDateTimeString(),
             'updated_at' => $feedback->updated_at->toDateTimeString(),
         ];

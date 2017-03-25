@@ -39,7 +39,8 @@ $api->version('v1', function (Router $api) {
             'except' => ['edit', 'create']
         ]);
 
-        $api->get('feedbacks/{feedback}/toggle', 'App\\Http\\Controllers\\FeedbacksController@toggle');
+        $api->get('feedbacks/{feedback}/toggleSolved', 'App\\Http\\Controllers\\FeedbacksController@toggleSolved');
+        $api->get('feedbacks/{feedback}/togglePrivate', 'App\\Http\\Controllers\\FeedbacksController@togglePrivate');
 
         $api->resource('campuses', 'App\\Http\\Controllers\\CampusesController', [
             'except' => ['edit', 'create']

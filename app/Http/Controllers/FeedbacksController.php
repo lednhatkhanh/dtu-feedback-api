@@ -76,6 +76,8 @@ class FeedbacksController extends BaseController
             'description' => 'required|min:10',
             'location' => 'required',
             'campus_id' => 'required|exists:campuses,id',
+            'category_id' => 'required|exists:categories,id',
+            'is_private' => 'string|in:true,false',
             'image' => 'sometimes|required|image',
         ]);
 
@@ -90,6 +92,9 @@ class FeedbacksController extends BaseController
         $feedback->description = $request->get('description');
         $feedback->location = $request->get('location');
         $feedback->campus_id = $request->get('campus_id');
+        $feedback->category_id = $request->get('category_id');
+        $request->get('is_private') === 'false'
+            ? $feedback->is_private = false : $feedback->is_private = true;
         $feedback->solved = false;
         $feedback->user_id = $user_id;
 
@@ -147,8 +152,10 @@ class FeedbacksController extends BaseController
             'description' => 'required',
             'location' => 'required',
             'campus_id' => 'required|exists:campuses,id',
+            'category_id' => 'required|exists:categories,id',
             'image' => 'sometimes|required|image',
-            'solved' => 'string'
+            'solved' => 'string|in:true,false',
+            'is_private' => 'string|in:true,false'
         ]);
 
         if($validator->fails()) {
@@ -179,6 +186,7 @@ class FeedbacksController extends BaseController
 
         // This is a laravel bug, really....
         $feedback->solved = $request->get('solved') === 'true' ? true : false;
+        $feedback->is_private = $request->get('is_private') === 'true' ? true : false;
 
         $feedback->save();
 
@@ -210,7 +218,25 @@ class FeedbacksController extends BaseController
         return $this->response->noContent();
     }
 
-    function toggle($id) {
+    function togglePrivate($id) {
+        $feedback = Feedback::find($id);
+
+        if(! $feedback) {
+            return $this->response->errorNotFound("There is no matched feedback");
+        }
+
+        $user = JWTAuth::parseToken()->authenticate();
+        // User has no access right
+        if($user->id != $feedback->user_id && !$user->can('access_backend')) {
+            return $this->response->errorUnauthorized("You are not allowed to delete this feedback!");
+        }
+
+        $feedback->is_private = !$feedback->is_private;
+        $feedback->save();
+        return $this->response->item($feedback, new FeedbackTransformer);
+    }
+
+    function toggleSolved($id) {
         $feedback = Feedback::find($id);
 
         if(! $feedback) {
