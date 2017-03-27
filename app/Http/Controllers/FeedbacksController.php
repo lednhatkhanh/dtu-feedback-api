@@ -28,9 +28,11 @@ class FeedbacksController extends BaseController
     function index(Request $request) {
 
         $validator = Validator::make($request->all(), [
-           'sort' => 'integer|in:0,1',
             'solved' => 'string|in:true,false,all', // This is a BUG with laravel...
-            'limit' => 'integer',
+            'limit' => 'integer|min:0',
+            'category_id' => 'integer|exists:categories,id',
+            'campus_id' => 'integer|exists:campuses,id',
+            'user_id' => 'integer|exists:users,id'
         ]);
 
         if($validator->fails()) {
@@ -39,10 +41,22 @@ class FeedbacksController extends BaseController
 
         $feedback = null;
 
-        if($request->exists('sort') && $request->get('sort') == 0) {
-            $feedback = Feedback::orderBy('created_at', 'asc');
-        } else {
-            $feedback = Feedback::orderBy('created_at', 'desc');
+        // Sorting part
+        $feedback = Feedback::orderBy('created_at', 'desc');
+
+        if($request->exists('category_id')) {
+            $category_id = $request->get('category_id');
+            $feedback = $feedback->where('category_id', $category_id);
+        }
+
+        if($request->exists('campus_id')) {
+            $user_id = $request->get('user_id');
+            $feedback = $feedback->where('user_id', $user_id);
+        }
+
+        if($request->exists('user_id')) {
+            $campus_id = $request->get('campus_id');
+            $feedback = $feedback->where('campus_id', $campus_id);
         }
 
         if($request->exists('solved')) {
@@ -54,9 +68,9 @@ class FeedbacksController extends BaseController
             }
         }
 
-        $limit = $request->get('limit');
+        if($request->exists('limit')) {
+            $limit = $request->get('limit');
 
-        if($limit) {
             $feedback = $feedback->paginate($limit);
         } else {
             $feedback = $feedback->paginate(10);
