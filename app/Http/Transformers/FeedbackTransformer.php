@@ -25,9 +25,11 @@ class FeedbackTransformer extends TransformerAbstract
             'is_private' => $feedback->is_private ? true : false,
             'campus' => [
                 'id' => $feedback->campus->id,
+                'name' => $feedback->campus->name,
             ],
             'category' => [
                 'id' => $feedback->category->id,
+                'name' => $feedback->category->name,
             ],
             'user' => [
                 'id' => $feedback->user->id,
@@ -35,7 +37,7 @@ class FeedbackTransformer extends TransformerAbstract
                 'avatar' => $feedback->user->avatar,
             ],
             'created_at' => $feedback->created_at->toDateTimeString(),
-            'updated_at' => $feedback->updated_at->toDateTimeString(),
+            'updated_at' => $feedback->updated_at->toDateTimeString()
         ];
     }
 }
