@@ -20,7 +20,6 @@ class CreateFeedbacksTable extends Migration
             $table->string('location');
             $table->string('image')->nullable();
             $table->boolean('solved')->default(false);
-            $table->boolean('is_private')->default(false);
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('campus_id');
             $table->unsignedInteger('category_id');

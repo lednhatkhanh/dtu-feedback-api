@@ -34,7 +34,6 @@ $factory->define(\App\Feedback::class, function (Faker\Generator $faker) {
         'user_id' => $faker->numberBetween(2, 6),
         'image' => $faker->randomElement(array('placeholder1.png', 'placeholder2.png', 'placeholder3.png')),
         'solved' => $faker->boolean(),
-        'is_private' => $faker->boolean(),
     ];
 });
 

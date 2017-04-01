@@ -22,7 +22,6 @@ class FeedbackTransformer extends TransformerAbstract
             'image' => $feedback->image,
             'location' => $feedback->location,
             'solved' => $feedback->solved ? true : false,
-            'is_private' => $feedback->is_private ? true : false,
             'campus' => [
                 'id' => $feedback->campus->id,
                 'name' => $feedback->campus->name,
