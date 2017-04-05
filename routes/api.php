@@ -44,5 +44,8 @@ $api->version('v1', function (Router $api) {
         $api->resource('campuses', 'App\\Http\\Controllers\\CampusesController', [
             'except' => ['edit', 'create']
         ]);
+        $api->resource('categories', 'App\\Http\\Controllers\\CategoriesController', [
+            'except' => ['edit', 'create']
+        ]);
     });
 });
