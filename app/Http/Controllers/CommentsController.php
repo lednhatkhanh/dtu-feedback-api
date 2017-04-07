@@ -18,14 +18,32 @@ class CommentsController extends BaseController
         ]);
     }
 
-    function index($feedback_id) {
+    function index(Request $request, $feedback_id) {
+
+        $validator = Validator::make($request->all(), [
+            'limit' => 'integer|min:0'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->all(), 422);
+        }
+
         $feedback = Feedback::find($feedback_id);
 
         if(!$feedback) {
             return $this->response->errorNotFound("There is no matched feedback");
         }
 
-        $comments = Comment::where('feedback_id', $feedback->id)->paginate(10);
+        $comments = Comment::where('feedback_id', $feedback->id);
+
+        if($request->exists('limit')) {
+            $limit = $request->get('limit');
+
+            $comments = $comments->paginate($limit);
+        } else {
+            $comments = $comments->paginate(10);
+        }
+
         return $this->response->paginator($comments, new CommentTransformer);
     }
 
