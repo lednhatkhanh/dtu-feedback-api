@@ -21,7 +21,6 @@ class UserTransformer extends TransformerAbstract
             'name' => $user->name,
             'email' => $user->email,
             'avatar' => $user->avatar,
-            'roles' => $user->roles->pluck('name'),
             'created_at' => $user->created_at->toDateTimeString(),
             'updated_at' => $user->updated_at->toDateTimeString(),
         ];
